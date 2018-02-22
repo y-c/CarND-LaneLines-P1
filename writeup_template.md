@@ -1,47 +1,65 @@
 # **Finding Lane Lines on the Road** 
 
-## Writeup Template
-
-### You can use this file as a template for your writeup if you want to submit it as a markdown file. But feel free to use some other method and submit a pdf if you prefer.
-
 ---
 
 **Finding Lane Lines on the Road**
 
 The goals / steps of this project are the following:
+
 * Make a pipeline that finds lane lines on the road
 * Reflect on your work in a written report
 
 
 [//]: # (Image References)
 
-[image1]: ./examples/grayscale.jpg "Grayscale"
+[image1]: ./test_images_output/gray_solidWhiteCurve.jpg "gray"
+
+[image2]: ./test_images_output/Gaussian_blurring_solidWhiteCurve.jpg "Gaussian"
+
+[image3]: ./test_images_output/Canny_edges_solidWhiteCurve.jpg "Canny"
+
+[image4]: ./test_images_output/masked_edges_solidWhiteCurve.jpg "mask"
+
+[image5]: ./test_images_output/Hough_lines_solidWhiteCurve.jpg "Hough"
+
+[image6]: ./test_images_output/final_solidWhiteCurve.jpg "final"
 
 ---
 
 ### Reflection
 
-### 1. Describe your pipeline. As part of the description, explain how you modified the draw_lines() function.
+### 1. Pipeline Description
 
-My pipeline consisted of 5 steps. First, I converted the images to grayscale, then I .... 
+My pipeline consisted of 6 steps:
 
-In order to draw a single line on the left and right lanes, I modified the draw_lines() function by ...
-
-If you'd like to include images to show how the pipeline works, here is how to include an image: 
-
+1. Read in the image and convert to grayscale
 ![alt text][image1]
 
+2. Define a kernel size for Gaussian smoothing / blurring and run it 
+![alt text][image2]
 
-### 2. Identify potential shortcomings with your current pipeline
+3. Define parameters for Canny edge detection and run it
+![alt text][image3]
 
+4. Define a four sided polygon to mask and run it
+![alt text][image4]
 
-One potential shortcoming would be what would happen when ... 
+5. Define the Hough transform parameters and run it
+![alt text][image5]
 
-Another shortcoming could be ...
+6. Overlay Hough lines with initial image
+![alt text][image6]
 
+In order to draw a single line on the left and right lanes, I modified the draw_lines() function by:
 
-### 3. Suggest possible improvements to your pipeline
+1. An average value is calculated for the slope, x, and y.
+2. A final line is drawn using the following function. 
+![equation](http://www.sciweavers.org/upload/Tex2Img_1519281586/render.png)  
+Note: throw out steep vertical slopes to avoid NaN error!
 
-A possible improvement would be to ...
+### 2. Potential shortcomings with my current pipeline
+It can't deal with curved lane, as in the "Challenge" part.
 
-Another potential improvement could be to ...
+### 3. Possible improvements to my pipeline
+1. Investigate methods to address the curved lane issue
+2. Current solution is kind of static (e.g., manually trying out different parameters). How to make the algorithm robust and adaptive to any online changes such as unexpected cameral movement?
